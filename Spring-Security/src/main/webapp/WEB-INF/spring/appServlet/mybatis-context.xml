@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+
+	<bean id="oracleDS"
+		class="org.apache.commons.dbcp2.BasicDataSource"> <!-- Oracle -->
+		<property name="driverClassName"
+			value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url"
+			value="jdbc:oracle:thin:@localhost:1521:xe" />
+		<property name="username" value="USER1" />
+		<property name="password" value="12341234" />
+	</bean>
+
+	<bean id="sqlSession"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="oracleDS"></property>
+		<property name="typeAliasesPackage"
+			value="com.sb.ss.model"></property> <!-- Model 위치 -->
+		<property name="mapperLocations"
+			value="/WEB-INF/spring/mapper/*-mapper.xml" /> <!-- Mapper 사용 -->
+		<property name="configuration">
+			<bean class="org.apache.ibatis.session.Configuration">
+				<property name="jdbcTypeForNull" value="VARCHAR" />
+				<property name="cacheEnabled" value="true" />
+				<property name="defaultExecutorType" value="REUSE" />
+				<property name="mapUnderscoreToCamelCase" value="false" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSession" />
+	</bean>
+	
+	<mybatis-spring:scan
+		base-package="com.sb.ss.persistence" /> <!-- Dao 위치 -->
+</beans>

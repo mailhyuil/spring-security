@@ -1,0 +1,35 @@
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sb.ss.persistence.UserDao">
+	<select id="selectAll" resultType="UserVO">
+	select * from tbl_user
+	</select>
+
+	<select id="findById" resultType="UserVO">
+	select * from tbl_user where username = #{username}
+	</select>
+
+	<insert id="insert" parameterType="UserVO">
+		INSERT INTO tbl_user (
+		username,
+		password,
+		name,
+		role,
+		email
+		) VALUES (
+		#{username},
+		#{password},
+		#{name},
+		#{role},
+		#{email}
+		)
+	</insert>
+
+	<update id="update">
+	</update>
+
+	<delete id="delete">
+	</delete>
+</mapper>
